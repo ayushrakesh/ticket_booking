@@ -148,48 +148,27 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Gap(height * 0.02),
-          // Container(
-          //   width: double.infinity,
-          //   // padding: const EdgeInsets.only(
-          //   //   right: 16,
-          //   // ),
-          //   // scrollDirection: Axis.horizontal,
-          //   child: StreamBuilder<QuerySnapshot>(
-          //     builder: (context, snapshot) {
-          //       // print(snapshot.data!.docs.
-          //       // length);
-          //       return ListView.builder(
-          //         shrinkWrap: true,
-          //         scrollDirection: Axis.horizontal,
-          //         itemBuilder: (context, index) {
-          //           if (snapshot.connectionState == ConnectionState.waiting) {
-          //             return CircularProgressIndicator();
-          //           }
-          //           if (snapshot.connectionState == ConnectionState.done) {
-          //             return Ticket(
-          //                 snapshot.data!.docs[index] as Map<String, dynamic>);
-          //           }
-          //         },
-          //         itemCount: snapshot.data!.docs.length,
-          //       );
-          //     },
-          //     stream: ticketsStream,
-          //   ),
-          // ),
-          // child: StreamBuilder(
+          // StreamBuilder<QuerySnapshot>(
           //   builder: (context, snapshot) {
+          //     // print(snapshot.data!.docs.
+          //     // length);
           //     return ListView.builder(
+          //       shrinkWrap: true,
+          //       scrollDirection: Axis.horizontal,
           //       itemBuilder: (context, index) {
-          //         return Ticket(snapshot.data!.docs[index]);
+          //         if (snapshot.connectionState == ConnectionState.waiting) {
+          //           return CircularProgressIndicator();
+          //         }
+          //         if (snapshot.connectionState == ConnectionState.done) {
+          //           return Ticket(
+          //               snapshot.data!.docs[index] as Map<String, dynamic>);
+          //         }
           //       },
           //       itemCount: snapshot.data!.docs.length,
           //     );
           //   },
-          //   stream:
-          //       FirebaseFirestore.instance.collection('tickets').snapshots(),
+          //   stream: ticketsStream,
           // ),
-
-          // TextButton(onPressed: getTickets, child: Text("get")),
           Gap(height * 0.05),
           Container(
             // padding: EdgeInsets.symmetric(horizontal: 20),

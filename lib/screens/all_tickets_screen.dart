@@ -12,36 +12,12 @@ class AllTicketsScreen extends StatefulWidget {
 }
 
 class _AllTicketsScreenState extends State<AllTicketsScreen> {
-  late Stream<QuerySnapshot> ticketsStream;
-
-  CollectionReference ticketsRF =
-      FirebaseFirestore.instance.collection('tickets');
-
-  List tickets = [];
-
-  bool isloading = false;
-
   @override
   void initState() {
     // getData();
     // ticketsStream = ticketsRF.snapshots();
     super.initState();
   }
-
-  // void getData() async {
-  //   setState(() {
-  //     isloading = true;
-  //   });
-  //   var data = await FirebaseFirestore.instance.collection('tickets').get();
-
-  //   setState(() {
-  //     isloading = true;
-  //   });
-  //   for (var doc in data.docs) {
-  //     tickets.add(doc.data() as Map<String, dynamic>);
-  //   }
-  //   print(tickets.length);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -58,35 +34,26 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
 
             if (snapshot.hasData) {
               return ListView.builder(
-                  // shrinkWrap: true,
-                  // scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      var ds = snapshot.data!.docs[index];
-                      // if (snapshot.data != null)
-                      return Ticket(ds as Map<String, dynamic>);
-                    }
+                    print("done");
+                    var tickets = snapshot.data!.docs
+                        .map(
+                          (e) => e.data() as Map<String, dynamic>,
+                        )
+                        .toList();
+                    print(snapshot.data!.docs.length);
+
+                    return Ticket(tickets[index]);
                   },
                   itemCount: snapshot.data!.docs.length);
             } else {
-              return Text('No data');
+              return CircularProgressIndicator();
             }
           },
           stream: FirebaseFirestore.instance.collection('tickets').snapshots(),
         ),
-        // child: isloading
-        //     ? ListView.builder(
-        //         itemBuilder: (ctx, index) {
-        //           return Ticket(tickets[index]);
-        //         },
-        //         itemCount: tickets.length,
-        //       )
-        //     : Center(
-        //         child: CircularProgressIndicator(),
-        //       ),
       ),
     );
   }
