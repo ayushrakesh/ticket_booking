@@ -41,6 +41,7 @@ dependencies:
   firebase_core: ^2.15.0
   firebase_auth: ^4.7.1
   cloud_firestore: ^4.4.5
+  transparent_image: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +75,8 @@ flutter:
     - assets/images/sit.jpg
     - assets/images/visa.png
     - assets/images/login-screen.jpg
+
+    - assets/gifs/loading.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,41 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:ticket_booking/utils/app_styles.dart';
 
 import '../widgets/ticket.dart';
 
-class AllTicketsScreen extends StatefulWidget {
+class AllTicketsScreen extends StatelessWidget {
   static const routename = 'all-tickets';
-
-  @override
-  State<AllTicketsScreen> createState() => _AllTicketsScreenState();
-}
-
-class _AllTicketsScreenState extends State<AllTicketsScreen> {
-  @override
-  void initState() {
-    // getData();
-    // ticketsStream = ticketsRF.snapshots();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     final width = Get.width;
     final height = Get.height;
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black87,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          'Tickets',
+          style: Styles.headLineStyle1,
+        ),
+      ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: width * 0.04, vertical: height * 0.05),
+        padding: EdgeInsets.only(
+            top: height * 0.02,
+            bottom: height * 0.02,
+            right: width * 0.06,
+            left: width * 0.02),
         child: StreamBuilder<QuerySnapshot>(
           builder: (context, snapshot) {
-            // print(snapshot.data!.docs.
-            // length);
-
             if (snapshot.hasData) {
               return ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     print("done");
                     var tickets = snapshot.data!.docs
@@ -49,7 +55,7 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
                   },
                   itemCount: snapshot.data!.docs.length);
             } else {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
           },
           stream: FirebaseFirestore.instance.collection('tickets').snapshots(),

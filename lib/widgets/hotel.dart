@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../utils/app_styles.dart';
 
@@ -40,11 +41,19 @@ class Hotel extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: Styles.primaryColor,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(
-                  'assets/images/${hotel['image']}',
-                ),
+              // image: DecorationImage(
+              //     fit: BoxFit.cover,
+              //     image: NetworkImage(
+              //       '${hotel['image']}',
+              //     )),
+            ),
+            child: Container(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: FadeInImage.assetNetwork(
+                    fit: BoxFit.cover,
+                    placeholder: 'assets/gifs/loading.gif',
+                    image: hotel['image']),
               ),
             ),
           ),

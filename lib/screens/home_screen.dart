@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import 'package:ticket_booking/data/ticket.dart';
+import 'package:ticket_booking/screens/all_hotels_screen.dart';
 import 'package:ticket_booking/screens/all_tickets_screen.dart';
 import '../data/hotel.dart';
 import '../widgets/ticket.dart';
@@ -17,42 +18,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Stream<QuerySnapshot> ticketsStream;
-
-  CollectionReference ticketsRF =
-      FirebaseFirestore.instance.collection('tickets');
-
-  @override
-  void initState() {
-    ticketsStream = ticketsRF.snapshots();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final width = Get.width;
     final height = Get.height;
-
-    List<QueryDocumentSnapshot> tickets = [];
-
-    void getTickets() async {
-      final data = await FirebaseFirestore.instance
-          .collection('tickets')
-          .get()
-          .then((value) {
-        for (var doc in value.docs) {
-          tickets.add(doc);
-          print('heollo');
-        }
-      });
-      print(data.docs.length);
-    }
-
-    @override
-    void initState() {
-      getTickets();
-      super.initState();
-    }
 
     return Scaffold(
       backgroundColor: Styles.bgColor,
@@ -148,27 +117,36 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Gap(height * 0.02),
-          // StreamBuilder<QuerySnapshot>(
-          //   builder: (context, snapshot) {
-          //     // print(snapshot.data!.docs.
-          //     // length);
-          //     return ListView.builder(
-          //       shrinkWrap: true,
-          //       scrollDirection: Axis.horizontal,
-          //       itemBuilder: (context, index) {
-          //         if (snapshot.connectionState == ConnectionState.waiting) {
-          //           return CircularProgressIndicator();
-          //         }
-          //         if (snapshot.connectionState == ConnectionState.done) {
-          //           return Ticket(
-          //               snapshot.data!.docs[index] as Map<String, dynamic>);
-          //         }
-          //       },
-          //       itemCount: snapshot.data!.docs.length,
-          //     );
-          //   },
-          //   stream: ticketsStream,
-          // ),
+          Container(
+            width: double.infinity,
+            height: height * 0.28,
+            child: StreamBuilder<QuerySnapshot>(
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      var docs = snapshot.data!.docs;
+
+                      var tickets = docs
+                          .map((e) => e.data() as Map<String, dynamic>)
+                          .toList();
+                      return Ticket(tickets[index]);
+                    },
+                    itemCount: snapshot.data!.docs.length,
+                  );
+                } else {
+                  return SizedBox(
+                      width: 10,
+                      height: 10,
+                      child: CircularProgressIndicator());
+                }
+              },
+              stream:
+                  FirebaseFirestore.instance.collection('tickets').snapshots(),
+            ),
+          ),
           Gap(height * 0.05),
           Container(
             // padding: EdgeInsets.symmetric(horizontal: 20),
@@ -181,7 +159,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: Styles.headLineStyle2,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed(AllHotelsScreen.routeName);
+                  },
                   child: Text(
                     'View all',
                     style: Styles.textStyle.copyWith(
@@ -193,11 +173,39 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const Gap(15),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.only(right: width * 0.04),
-            child: Row(
-              children: hotelList.map((e) => Hotel(e)).toList(),
+          Container(
+            width: double.infinity,
+            height: height * 0.5,
+            child: StreamBuilder<QuerySnapshot>(
+              builder: (context, snapshot) {
+                // print(snapshot.data!.docs.
+                // length);
+
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        print("done");
+                        var hotels = snapshot.data!.docs
+                            .map(
+                              (e) => e.data() as Map<String, dynamic>,
+                            )
+                            .toList();
+                        print(snapshot.data!.docs.length);
+
+                        return Hotel(hotels[index] as Map<String, dynamic>);
+                      },
+                      itemCount: 3);
+                } else {
+                  return SizedBox(
+                      width: 10,
+                      height: 10,
+                      child: CircularProgressIndicator());
+                }
+              },
+              stream:
+                  FirebaseFirestore.instance.collection('hotels').snapshots(),
             ),
           ),
           Gap(height * 0.04),
