@@ -28,20 +28,20 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
     super.initState();
   }
 
-  void getData() async {
-    setState(() {
-      isloading = true;
-    });
-    var data = await FirebaseFirestore.instance.collection('tickets').get();
+  // void getData() async {
+  //   setState(() {
+  //     isloading = true;
+  //   });
+  //   var data = await FirebaseFirestore.instance.collection('tickets').get();
 
-    setState(() {
-      isloading = true;
-    });
-    for (var doc in data.docs) {
-      tickets.add(doc.data() as Map<String, dynamic>);
-    }
-    print(tickets.length);
-  }
+  //   setState(() {
+  //     isloading = true;
+  //   });
+  //   for (var doc in data.docs) {
+  //     tickets.add(doc.data() as Map<String, dynamic>);
+  //   }
+  //   print(tickets.length);
+  // }
 
   @override
   Widget build(BuildContext context) {
