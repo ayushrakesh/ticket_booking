@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1035502364660",
+    "project_id": "flutter-chat-app-2-6387f",
+    "storage_bucket": "flutter-chat-app-2-6387f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035502364660:android:0fcdd556d310218927bba1",
+        "android_client_info": {
+          "package_name": "com.example.ticket_booking"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6NtexW1yTVFGwDFJtd7mgho7kaylGCbs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
