@@ -4,6 +4,7 @@ import 'package:ticket_booking/screens/all_hotels_screen.dart';
 import 'package:ticket_booking/screens/all_tickets_screen.dart';
 import 'package:ticket_booking/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ticket_booking/screens/payment_screen.dart';
 import 'package:ticket_booking/widgets/bottom_bar.dart';
 import 'firebase_options.dart';
 
@@ -39,7 +40,8 @@ class _MyAppState extends State<MyApp> {
       ),
       routes: {
         AllTicketsScreen.routename: (context) => AllTicketsScreen(),
-        AllHotelsScreen.routeName: (context) => AllHotelsScreen()
+        AllHotelsScreen.routeName: (context) => AllHotelsScreen(),
+        PaymentScreen.routeName: (context) => PaymentScreen()
       },
     );
   }

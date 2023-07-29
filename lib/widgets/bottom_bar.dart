@@ -19,7 +19,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   static final List<Widget> widgetOptions = [
     HomeScreen(),
     const SearchScreen(),
-    // TicketsScreen(),
+    TicketsScreen(),
     ProfileScreen(),
   ];
 
