@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:ticket_booking/screens/payment_screen.dart';
@@ -19,6 +20,7 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
   Widget build(BuildContext context) {
     final width = Get.width;
     final height = Get.height;
+
     final seatsController = TextEditingController();
 
     int noOfSeats = 0;
@@ -41,18 +43,26 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
                         children: [
                           Text(
                             'From',
-                            style: TextStyle(fontSize: 22, color: Colors.black),
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
                           ),
-                          Text(ticket['from-name'])
+                          Text(
+                            ticket['from-name'],
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          )
                         ],
                       ),
                       Column(
                         children: [
                           Text(
                             'To',
-                            style: TextStyle(fontSize: 22, color: Colors.black),
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
                           ),
-                          Text(ticket['to-name'])
+                          Text(
+                            ticket['to-name'],
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          )
                         ],
                       ),
                     ],
@@ -63,12 +73,16 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
                     children: [
                       Text(
                         'Date',
-                        style: TextStyle(fontSize: 22, color: Colors.black),
+                        style: TextStyle(fontSize: 20, color: Colors.grey),
                       ),
-                      Text(ticket['date']),
+                      Text(
+                        ticket['date'],
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500),
+                      ),
                     ],
                   ),
-                  Gap(height * 0.05),
+                  Gap(height * 0.03),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -91,27 +105,37 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
                       )
                     ],
                   ),
+                  Gap(height * 0.02),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple,
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.2, vertical: height * 0.02),
+                      backgroundColor: Colors.purple,
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      onPressed: () {
-                        print(noOfSeats);
+                    ),
+                    onPressed: () {
+                      print(dotenv.env['VARIABLE']);
+                      print(noOfSeats);
 
-                        if (noOfSeats <= int.parse(ticket['number'])) {
-                          seatsController.clear();
-                          seatsController.text = '';
+                      if (noOfSeats <= ticket['number'] && noOfSeats >= 1) {
+                        seatsController.clear();
 
-                          noOfSeats = 0;
-                          Navigator.of(context)
-                              .pushNamed(PaymentScreen.routeName);
-                        }
-                      },
-                      child: const Text('Go for payment'))
+                        Navigator.of(context).pushNamed(PaymentScreen.routeName,
+                            arguments: {
+                              'ticket': ticket,
+                              'seats': noOfSeats,
+                              'ticket-id': ticket['id']
+                            });
+                      }
+                    },
+                    child: const Text(
+                      'Go for payment',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  )
                 ],
               ),
             );
