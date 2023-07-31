@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gap/gap.dart';
@@ -16,15 +17,17 @@ class AllTicketsScreen extends StatefulWidget {
 }
 
 class _AllTicketsScreenState extends State<AllTicketsScreen> {
+  final seatsController = TextEditingController();
+
+  final width = Get.width;
+  final height = Get.height;
+
+  int noOfSeats = 0;
+  // int singleTicketPrice = 0;
+  int price = 0;
+
   @override
   Widget build(BuildContext context) {
-    final width = Get.width;
-    final height = Get.height;
-
-    final seatsController = TextEditingController();
-
-    int noOfSeats = 0;
-
     void showBottomModal(BuildContext context, Map<String, dynamic> ticket) {
       showModalBottomSheet(
           isScrollControlled: true,
@@ -98,6 +101,7 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
                             setState(() {
                               noOfSeats = int.parse(value);
                             });
+
                             // print(noOfSeats);
                           },
                           keyboardType: TextInputType.number,
@@ -117,18 +121,22 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
                       ),
                     ),
                     onPressed: () {
-                      print(dotenv.env['VARIABLE']);
                       print(noOfSeats);
+
+                      print(ticket['price']);
+
+                      print(price);
 
                       if (noOfSeats <= ticket['number'] && noOfSeats >= 1) {
                         seatsController.clear();
 
-                        Navigator.of(context).pushNamed(PaymentScreen.routeName,
-                            arguments: {
-                              'ticket': ticket,
-                              'seats': noOfSeats,
-                              'ticket-id': ticket['id']
-                            });
+                        Navigator.of(context)
+                            .pushNamed(PaymentScreen.routeName, arguments: {
+                          'ticket': ticket,
+                          'seats': noOfSeats,
+                          'ticket-id': ticket['id'],
+                          'initial-price': noOfSeats * ticket['price']
+                        });
                       }
                     },
                     child: const Text(

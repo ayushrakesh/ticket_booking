@@ -29,7 +29,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
   var newTicket;
   var seats;
   var ticketId;
-
+  var price;
+  bool isCorrectAmount = false;
   String? paymentId;
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
@@ -82,7 +83,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'from-name': newTicket['from-name'],
       'to-code': newTicket['to-code'],
       'to-name': newTicket['to-name'],
+      'number': seats,
+      'departure-date': newTicket['date'],
+      'departure-time': newTicket['departure-time'],
+      'flying-time': newTicket['flying-time'],
       'booking-time': DateTime.now(),
+      'booking-code': '${newTicket['from-code']}2${newTicket['to-code']}$seats',
+      'price-in-rupees': price
     });
 
     print(ticketId);
@@ -94,8 +101,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
         .get()
         .then((value) {
       value.docs.forEach((element) {
-        print(element.data().length);
-        // print(element.data());
         element.data().update('number', (value) => (value - seats));
       });
     });
@@ -109,6 +114,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     newTicket = args['ticket'];
     seats = args['seats'];
     ticketId = args['ticket-id'];
+    price = args['initial-price'];
 
     return Scaffold(
       appBar: AppBar(
@@ -132,6 +138,32 @@ class _PaymentScreenState extends State<PaymentScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Gap(height * 0.03),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(width * 0.03),
+                child: Row(
+                  children: [
+                    Text(
+                      'Total price:',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Icon(
+                      Icons.currency_rupee,
+                      size: 20,
+                    ),
+                    Text(
+                      '$price',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
           Gap(height * 0.05),
           Text(
             'You are Paying',
@@ -142,6 +174,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             width: width * 0.5,
             child: TextField(
               // initialValue: amount.toString(),
+              // initialValue: price.toString(),
               controller: amountController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
@@ -172,6 +205,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             width: double.infinity,
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  disabledBackgroundColor: Color.fromARGB(255, 197, 176, 233),
                   backgroundColor: Color.fromARGB(255, 112, 56, 209),
                   elevation: 0,
                   padding: EdgeInsets.symmetric(vertical: height * 0.02),
@@ -179,36 +213,37 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     borderRadius: BorderRadius.circular(6),
                   ),
                 ),
-                onPressed: () {
-                  amountController.clear();
-                  FocusScope.of(context).unfocus();
-                  var options = {
-                    'key': 'rzp_test_CblvpHIuQvZbuJ',
-                    'amount': amount * 100, //in the smallest currency sub-unit.
-                    'name': 'Ticketing Infinity Corporation',
-                    // Generate order_id using Orders API
-                    'description': 'Flight ticket booking platform.',
-                    'timeout': 300, // in seconds
-                    'prefill': {
-                      'contact': '7000427287',
-                      'email': 'test@gmail.com'
-                      // 'email': FutureBuilder(
-                      //   builder: (context, snapshot) {
-                      //     var doc = snapshot.data!.docs.firstWhere(
-                      //         (element) => element.id == currentUserId);
-                      //     return doc['email'];
-                      //   },
-                      //   future:
-                      //       FirebaseFirestore.instance.collection('users').get(),
-                      // )
-                    }
-                  };
-                  if (amount >= 1) {
-                    _razorpay.open(options);
-                  }
-                  print(options['amount']);
-                  print(options['name']);
-                },
+                onPressed: amountController.text == price.toString()
+                    ? () {
+                        FocusScope.of(context).unfocus();
+                        var options = {
+                          'key': 'rzp_test_CblvpHIuQvZbuJ',
+                          'amount':
+                              amount * 100, //in the smallest currency sub-unit.
+                          'name': 'Ticketing Infinity Corporation',
+                          // Generate order_id using Orders API
+                          'description': 'Flight ticket booking platform.',
+                          'timeout': 300, // in seconds
+                          'prefill': {
+                            'contact': '7000427287',
+                            'email': 'test@gmail.com'
+                            // 'email': FutureBuilder(
+                            //   builder: (context, snapshot) {
+                            //     var doc = snapshot.data!.docs.firstWhere(
+                            //         (element) => element.id == currentUserId);
+                            //     return doc['email'];
+                            //   },
+                            //   future:
+                            //       FirebaseFirestore.instance.collection('users').get(),
+                            // )
+                          }
+                        };
+                        _razorpay.open(options);
+                      }
+                    : null
+
+                // amountController.clear();
+                ,
                 child: Text(
                   'Pay',
                   style: TextStyle(fontSize: 16),
