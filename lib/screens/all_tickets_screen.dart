@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -8,6 +9,7 @@ import 'package:ticket_booking/screens/payment_screen.dart';
 import 'package:ticket_booking/utils/app_styles.dart';
 
 import '../widgets/ticket.dart';
+import '../widgets/tickets_details.dart';
 
 class AllTicketsScreen extends StatefulWidget {
   static const routename = 'all-tickets';
@@ -19,12 +21,22 @@ class AllTicketsScreen extends StatefulWidget {
 class _AllTicketsScreenState extends State<AllTicketsScreen> {
   final seatsController = TextEditingController();
 
+  final fromController = TextEditingController();
+  final toController = TextEditingController();
+
   final width = Get.width;
   final height = Get.height;
+
+  String from = '';
+  String to = '';
 
   int noOfSeats = 0;
   // int singleTicketPrice = 0;
   int price = 0;
+
+  List fromFilteredTickets = [];
+  List toFilteredTickets = [];
+  List filteredTickets = [];
 
   @override
   Widget build(BuildContext context) {
@@ -151,8 +163,78 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
           isDismissible: true);
     }
 
+    void fromFetch(String fromtext) async {
+      setState(() {
+        from = fromtext;
+      });
+
+      QuerySnapshot allTicketss =
+          (await FirebaseFirestore.instance.collection('tickets').get());
+
+      var alltickets = allTicketss.docs
+          .map((e) => e.data() as Map<String, dynamic>)
+          .toList();
+
+      var results = alltickets
+          .where((element) =>
+              element['from-name'].toLowerCase().contains(from.toLowerCase()))
+          .toList();
+
+      setState(() {
+        fromFilteredTickets = results;
+      });
+
+      print(fromFilteredTickets);
+      print(fromFilteredTickets.length);
+    }
+
+    void toFetch(String totext) async {
+      setState(() {
+        to = totext;
+      });
+
+      var allTickets = [];
+
+      QuerySnapshot allTicketss =
+          (await FirebaseFirestore.instance.collection('tickets').get());
+
+      var alltickets =
+          allTicketss.docs.map((e) => e.data() as Map<String, dynamic>);
+
+      var results = alltickets
+          .where((element) => element['to-name']
+              .toString()
+              .toLowerCase()
+              .contains(to.toLowerCase()))
+          .toList();
+
+      setState(() {
+        toFilteredTickets = results;
+      });
+
+      print(toFilteredTickets.length);
+      print(toFilteredTickets);
+    }
+
+    void filterTickets() {
+      FocusScope.of(context).unfocus();
+
+      var lists = [...fromFilteredTickets, ...toFilteredTickets];
+
+      fromFilteredTickets
+          .removeWhere((element) => toFilteredTickets.contains(element));
+
+      setState(() {
+        filteredTickets = fromFilteredTickets;
+      });
+
+      print(lists);
+      print(filteredTickets);
+    }
+
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: true,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -160,6 +242,7 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
           icon: const Icon(
             Icons.arrow_back_ios,
             color: Colors.black87,
+            size: 18,
           ),
         ),
         backgroundColor: Colors.white,
@@ -167,52 +250,196 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
         centerTitle: true,
         title: Text(
           'Tickets',
-          style: Styles.headLineStyle1,
+          style: Styles.headLineStyle1.copyWith(fontSize: 22),
         ),
       ),
       body: Padding(
         padding: EdgeInsets.only(
-            top: height * 0.02,
-            bottom: height * 0.02,
-            right: width * 0.06,
-            left: width * 0.02),
-        child: StreamBuilder<QuerySnapshot>(
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                  // padding: EdgeInsets.all(12),
-                  itemBuilder: (context, index) {
-                    print("done");
-                    var tickets = snapshot.data!.docs
-                        .map(
-                          (e) => e.data() as Map<String, dynamic>,
-                        )
-                        .toList();
-                    print(snapshot.data!.docs.length);
+          // top: height * 0.02,
+          // bottom: height * 0.02,
+          right: width * 0.02,
+          left: width * 0.02,
+        ),
+        child: Column(
+          children: [
+            // Gap(height * 0.02),
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: width * 0.04),
+                  child: Text(
+                    'Search tickets',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300,
+                      letterSpacing: 0.6,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: height * 0.02,
+                horizontal: width * 0.06,
+              ),
+              child: TextField(
+                controller: fromController,
+                onChanged: (value) {
+                  fromFetch(value);
+                },
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: height * 0.00,
+                    horizontal: width * 0.05,
+                  ),
+                  hintText: 'From',
+                  filled: true,
+                  fillColor: Colors.grey.shade300,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(
+                      12,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Gap(height * 0.02),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                // vertical: height * 0.02,
+                horizontal: width * 0.06,
+              ),
+              child: TextField(
+                controller: toController,
+                onChanged: (value) {
+                  toFetch(value);
+                },
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: height * 0.00,
+                    horizontal: width * 0.05,
+                  ),
+                  hintText: 'To',
+                  filled: true,
+                  fillColor: Colors.grey.shade300,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(
+                      12,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Gap(height * 0.03),
+            Container(
+              // padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+              width: width * 0.8,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      13,
+                    ),
+                  ),
+                  backgroundColor: Color.fromARGB(255, 205, 145, 230),
+                  padding: EdgeInsets.symmetric(
+                    vertical: height * 0.02,
+                  ),
+                ),
+                onPressed: () {
+                  filterTickets();
+                },
+                child: Text(
+                  'Find tickets',
+                  style: Styles.textStyle.copyWith(color: Colors.white),
+                ),
+              ),
+            ),
+            Gap(height * 0.02),
+            filteredTickets.isEmpty
+                ? Expanded(
+                    child: StreamBuilder<QuerySnapshot>(
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                              // padding: EdgeInsets.all(12),
+                              itemBuilder: (context, index) {
+                                print("done");
+                                var tickets = snapshot.data!.docs
+                                    .map(
+                                      (e) => e.data() as Map<String, dynamic>,
+                                    )
+                                    .toList();
+                                print(snapshot.data!.docs.length);
 
-                    return Column(
-                      children: [
-                        Row(
+                                return Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Ticket(tickets[index]),
+                                        Spacer(),
+                                        TextButton(
+                                          onPressed: () {
+                                            showBottomModal(
+                                                context, tickets[index]);
+                                          },
+                                          child: const Text(
+                                            'Book \nnow',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Divider()
+                                  ],
+                                );
+                              },
+                              itemCount: snapshot.data!.docs.length);
+                        } else {
+                          return SizedBox(
+                              height: height * 0.05,
+                              width: height * 0.05,
+                              child: const CircularProgressIndicator());
+                        }
+                      },
+                      stream: FirebaseFirestore.instance
+                          .collection('tickets')
+                          .snapshots(),
+                    ),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (ctx, index) {
+                        return Column(
                           children: [
-                            Ticket(tickets[index]),
-                            Spacer(),
-                            TextButton(
-                                onPressed: () {
-                                  showBottomModal(context, tickets[index]);
-                                },
-                                child: Text('Book \nnow'))
+                            Row(
+                              children: [
+                                Ticket(filteredTickets[index]),
+                                Spacer(),
+                                TextButton(
+                                  onPressed: () {
+                                    showBottomModal(
+                                        context, filteredTickets[index]);
+                                  },
+                                  child: const Text(
+                                    'Book \nnow',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider()
                           ],
-                        ),
-                        Divider()
-                      ],
-                    );
-                  },
-                  itemCount: snapshot.data!.docs.length);
-            } else {
-              return const CircularProgressIndicator();
-            }
-          },
-          stream: FirebaseFirestore.instance.collection('tickets').snapshots(),
+                        );
+                      },
+                      itemCount: filteredTickets.length,
+                    ),
+                  ),
+          ],
         ),
       ),
     );

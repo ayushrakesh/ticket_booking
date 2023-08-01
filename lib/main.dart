@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ticket_booking/screens/all_hotels_screen.dart';
 import 'package:ticket_booking/screens/all_tickets_screen.dart';
+import 'package:ticket_booking/screens/home_screen.dart';
 import 'package:ticket_booking/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ticket_booking/screens/payment_screen.dart';
@@ -42,6 +43,8 @@ class _MyAppState extends State<MyApp> {
         stream: FirebaseAuth.instance.authStateChanges(),
       ),
       routes: {
+        BottomNavigation.routeName: (context) => BottomNavigation(),
+        HomeScreen.routeName: (context) => HomeScreen(),
         AllTicketsScreen.routename: (context) => AllTicketsScreen(),
         AllHotelsScreen.routeName: (context) => AllHotelsScreen(),
         PaymentScreen.routeName: (context) => PaymentScreen()

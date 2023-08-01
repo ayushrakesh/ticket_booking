@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:ticket_booking/screens/home_screen.dart';
 import 'package:ticket_booking/widgets/bar_code.dart';
+import 'package:ticket_booking/widgets/bottom_bar.dart';
 
 import 'package:ticket_booking/widgets/dash_line.dart';
 import '../data/ticket.dart';
@@ -30,6 +32,16 @@ class _TicketsScreenState extends State<TicketsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushNamed(BottomNavigation.routeName);
+          },
+        ),
         backgroundColor: Styles.bgColor,
         elevation: 0,
         title: Text(
@@ -99,7 +111,7 @@ class _TicketsScreenState extends State<TicketsScreen> {
                   if (snapshot.hasData) {
                     return Expanded(
                       child: ListView.builder(
-                        reverse: true,
+                        // reverse: true,
                         itemBuilder: (context, index) => Container(
                           margin: EdgeInsets.only(bottom: height * 0.03),
                           decoration: BoxDecoration(
@@ -256,8 +268,9 @@ class _TicketsScreenState extends State<TicketsScreen> {
                         itemCount: snapshot.data!.docs.length,
                       ),
                     );
+                  } else {
+                    return CircularProgressIndicator();
                   }
-                  return CircularProgressIndicator();
                 },
                 stream: FirebaseFirestore.instance
                     .collection('users')

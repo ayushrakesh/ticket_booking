@@ -7,7 +7,7 @@ import '../screens/search_screen.dart';
 import '../screens/home_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({Key? key}) : super(key: key);
+  static const routeName = '/nav-bottom';
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();

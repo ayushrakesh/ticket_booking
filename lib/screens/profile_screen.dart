@@ -23,10 +23,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
   var currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
   bool isLoading = false;
+  bool logoutWaiting = false;
 
   DocumentReference userData = FirebaseFirestore.instance
       .collection('users')
       .doc(FirebaseAuth.instance.currentUser!.uid);
+
+  void showLogoutAlert() {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+            contentPadding: EdgeInsets.symmetric(
+                horizontal: width * 0.03, vertical: height * 0.02),
+            content: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Are you sure?',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  Gap(height * 0.02),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    // mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton(
+                          onPressed: signOut,
+                          child: Text(
+                            'Yes',
+                            style:
+                                TextStyle(color: Theme.of(context).errorColor),
+                          )),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('No'),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ));
+      },
+    );
+  }
+
+  void signOut() async {
+    Navigator.of(context).pop();
+    setState(() {
+      logoutWaiting = true;
+    });
+
+    FirebaseAuth.instance.signOut();
+
+    setState(() {
+      logoutWaiting = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -339,7 +396,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       DateFormat.yMMMd().format(DateTime.now()),
                       style: Styles.headLineStyle4.copyWith(
                           fontSize: 18,
-                          color: Color.fromARGB(255, 246, 88, 39)),
+                          color: Color.fromARGB(255, 115, 5, 149)),
                     ),
                   ],
                 ),
@@ -449,6 +506,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
+          Gap(height * 0.05),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            // width: width * 0.5,
+            // decoration: BoxDecoration(
+            //   borderRadius: BorderRadius.circular(width * 0.1),
+            // ),
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 12.0,
+                  padding: EdgeInsets.symmetric(
+                      vertical: height * 0.03, horizontal: width * 0.1),
+                  backgroundColor: Colors.deepOrange,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      width * 0.1,
+                    ),
+                  ),
+                ),
+                onPressed: showLogoutAlert,
+                child: !logoutWaiting
+                    ? const Text(
+                        'Logout',
+                        style: TextStyle(letterSpacing: 0.8),
+                      )
+                    : const CircularProgressIndicator(),
+              ),
+            ],
+          )
         ],
       ),
     );

@@ -13,11 +13,16 @@ import '../widgets/hotel.dart';
 import '../utils/app_styles.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const routeName = '/home';
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final searchController = TextEditingController();
+  String searchText = '';
+
   @override
   Widget build(BuildContext context) {
     final width = Get.width;
@@ -69,28 +74,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 const Gap(25),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF4F6FD),
-                    borderRadius: BorderRadius.circular(
-                      8,
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        FluentIcons.search_24_regular,
-                        color: Color(0xFFBFC205),
-                      ),
-                      Text(
-                        'Search',
-                        style: Styles.headLineStyle4,
-                      ),
-                    ],
-                  ),
-                ),
+                // SearchBar(
+                //   padding: MaterialStateProperty.all(
+                //     EdgeInsets.symmetric(
+                //       horizontal: width * 0.05,
+                //       // vertical: height * 0.02,
+                //     ),
+                //   ),
+                //   leading: Icon(Icons.search),
+                //   controller: searchController,
+                //   onChanged: (value) {
+                //     setState(() {
+                //       searchText = value;
+                //     });
+                //   },
+                //   hintText: 'Search tickets here',
+                // ),
                 const Gap(40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
