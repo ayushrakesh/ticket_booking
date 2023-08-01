@@ -86,6 +86,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'number': seats,
       'departure-date': newTicket['date'],
       'departure-time': newTicket['departure-time'],
+      'flight-name': newTicket['flight-name'],
+      'flying-distance': newTicket['flying-distance'],
       'flying-time': newTicket['flying-time'],
       'booking-time': DateTime.now(),
       'booking-code': '${newTicket['from-code']}2${newTicket['to-code']}$seats',

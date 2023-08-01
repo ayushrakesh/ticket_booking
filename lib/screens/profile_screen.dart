@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:ticket_booking/utils/app_styles.dart';
+import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key? key}) : super(key: key);
@@ -19,6 +20,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   String username = '';
 
+  var currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
   bool isLoading = false;
 
   DocumentReference userData = FirebaseFirestore.instance
@@ -27,7 +30,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var data = userData.get();
     return Scaffold(
       backgroundColor: Styles.bgColor,
       body: ListView(
@@ -233,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           return SizedBox(
                             height: height * 0.02,
                             width: height * 0.02,
-                            child: CircularProgressIndicator(
+                            child: const CircularProgressIndicator(
                               strokeWidth: 1,
                             ),
                           );
@@ -256,7 +258,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           return SizedBox(
                             height: height * 0.02,
                             width: height * 0.02,
-                            child: Center(
+                            child: const Center(
                               child: CircularProgressIndicator(
                                 strokeWidth: 1,
                               ),
@@ -280,24 +282,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: width * 0.03),
             decoration: BoxDecoration(
-                color: Styles.bgColor,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade200,
-                    blurRadius: 1,
-                    spreadRadius: 1,
-                  )
-                ]),
+              color: Styles.bgColor,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.shade200,
+                  blurRadius: 1,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
             child: Column(
               children: [
-                Text(
-                  '192802',
-                  style: TextStyle(
-                    fontSize: 45,
-                    color: Styles.textColor,
-                    fontWeight: FontWeight.w600,
-                  ),
+                FutureBuilder(
+                  builder: (ctx, future) {
+                    if (future.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+                    num totalMiles = 0;
+                    var ls = future.data!.docs.map(
+                      (e) {
+                        return int.parse(e.data()['flying-distance']);
+                      },
+                    ).toList();
+
+                    ls.forEach((element) {
+                      totalMiles = totalMiles + element;
+                    });
+
+                    return Text(
+                      totalMiles.toString(),
+                      style: TextStyle(
+                        fontSize: 45,
+                        color: Styles.textColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  },
+                  future: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(currentUserId)
+                      .collection('booked-tickets')
+                      .get(),
                 ),
                 Gap(height * 0.03),
                 Row(
@@ -310,139 +336,119 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     Text(
-                      '11 May 2023',
+                      DateFormat.yMMMd().format(DateTime.now()),
                       style: Styles.headLineStyle4.copyWith(
-                        fontSize: 16,
-                      ),
+                          fontSize: 18,
+                          color: Color.fromARGB(255, 246, 88, 39)),
                     ),
                   ],
                 ),
-                Gap(height * 0.03),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '23 042',
-                          style: Styles.headLineStyle3,
+                StreamBuilder(
+                  builder: (ctx, snapshot) {
+                    if (snapshot.hasData) {
+                      return SizedBox(
+                        width: double.infinity,
+                        height: snapshot.data!.docs.length * height * 0.1,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemBuilder: (ctx, index) => Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    snapshot
+                                        .data!.docs[index]['flying-distance']
+                                        .toString(),
+                                    style: Styles.headLineStyle3,
+                                  ),
+                                  const Gap(5),
+                                  Text(
+                                    'kilometers',
+                                    style: Styles.headLineStyle4,
+                                  ),
+                                  Gap(height * 0.02),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    snapshot.data!.docs[index]['flight-name'],
+                                    style: Styles.headLineStyle3,
+                                  ),
+                                  const Gap(5),
+                                  Text(
+                                    'Received from',
+                                    style: Styles.headLineStyle4,
+                                  ),
+                                  Gap(height * 0.02),
+                                ],
+                              ),
+                            ],
+                          ),
+                          itemCount: snapshot.data!.docs.length,
                         ),
-                        const Gap(5),
-                        Text(
-                          'Miles',
-                          style: Styles.headLineStyle4,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Airline CO',
-                          style: Styles.headLineStyle3,
-                        ),
-                        const Gap(5),
-                        Text(
-                          'Received from',
-                          style: Styles.headLineStyle4,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Gap(height * 0.03),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '24',
-                          style: Styles.headLineStyle3,
-                        ),
-                        const Gap(5),
-                        Text(
-                          'Miles',
-                          style: Styles.headLineStyle4,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'McDonal\'s',
-                          style: Styles.headLineStyle3,
-                        ),
-                        const Gap(5),
-                        Text(
-                          'Received from',
-                          style: Styles.headLineStyle4,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Gap(height * 0.03),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '52 340',
-                          style: Styles.headLineStyle3,
-                        ),
-                        const Gap(5),
-                        Text(
-                          'Miles',
-                          style: Styles.headLineStyle4,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Exuma',
-                          style: Styles.headLineStyle3,
-                        ),
-                        const Gap(5),
-                        Text(
-                          'Received from',
-                          style: Styles.headLineStyle4,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Gap(height * 0.04),
-                InkWell(
-                  onTap: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    FirebaseAuth.instance.signOut();
-
-                    setState(() {
-                      isLoading = false;
-                    });
+                      );
+                    }
+                    return CircularProgressIndicator();
                   },
-                  child: isLoading
-                      ? CircularProgressIndicator()
-                      : Text(
-                          'Logout',
-                          style: Styles.headLineStyle4
-                              .copyWith(color: Styles.primaryColor),
-                        ),
-                ),
-                Gap(height * 0.04),
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(currentUserId)
+                      .collection('booked-tickets')
+                      .snapshots(),
+                )
+                // StreamBuilder(
+                //   builder: (ctx, stream) => Expanded(
+                //     child: ListView.builder(
+                //       shrinkWrap: true,
+                //       itemBuilder: (ctx, index) => Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //         children: [
+                //           Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               Text(
+                //                 stream.data!.docs[index]['flying-distance'].toString(),
+                //                 style: Styles.headLineStyle3,
+                //               ),
+                //               const Gap(5),
+                //               Text(
+                //                 'kilometers',
+                //                 style: Styles.headLineStyle4,
+                //               ),
+                //             ],
+                //           ),
+                //           Column(
+                //             crossAxisAlignment: CrossAxisAlignment.end,
+                //             children: [
+                //               Text(
+                //                 stream.data!.docs[index]['flight-name'],
+                //                 style: Styles.headLineStyle3,
+                //               ),
+                //               const Gap(5),
+                //               Text(
+                //                 'Received from',
+                //                 style: Styles.headLineStyle4,
+                //               ),
+                //             ],
+                //           ),
+                //         ],
+                //       ),
+                //       itemCount: 2,
+                //     ),
+                //   ),
+                //   stream: FirebaseFirestore.instance
+                //       .collection('users')
+                //       .doc(currentUserId)
+                //       .collection('booked-tickets')
+                //       .snapshots(),
+                // ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

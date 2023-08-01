@@ -95,154 +95,170 @@ class _TicketsScreenState extends State<TicketsScreen> {
               ),
               Gap(height * 0.05),
               StreamBuilder(
-                builder: (context, snapshot) => Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) => Container(
-                      margin: EdgeInsets.only(bottom: height * 0.03),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(height * 0.03),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade300,
-                            spreadRadius: 5,
-                            blurRadius: 5,
-                            offset: Offset(16, 6),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: ListView.builder(
+                        reverse: true,
+                        itemBuilder: (context, index) => Container(
+                          margin: EdgeInsets.only(bottom: height * 0.03),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(height * 0.03),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade300,
+                                spreadRadius: 5,
+                                blurRadius: 5,
+                                offset: Offset(16, 6),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: height * 0.02, horizontal: width * 0.04),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: height * 0.02,
+                                horizontal: width * 0.04),
+                            child: Column(
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      snapshot.data!.docs[index]['from-name'],
-                                      style: Styles.headLineStyle3,
-                                    ),
-                                    const Gap(5),
-                                    Text(
-                                      'From',
-                                      style: Styles.headLineStyle4,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      snapshot.data!.docs[index]['to-name'],
-                                      style: Styles.headLineStyle3,
-                                    ),
-                                    const Gap(5),
-                                    Text(
-                                      'Travelling to',
-                                      style: Styles.headLineStyle4,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Gap(height * 0.03),
-                            const DashLines(true, 7, 5),
-                            Gap(height * 0.03),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      snapshot.data!.docs[index]['number']
-                                          .toString(),
-                                      style: Styles.headLineStyle3,
-                                    ),
-                                    const Gap(5),
-                                    Text(
-                                      'Number of e-tickets',
-                                      style: Styles.headLineStyle4,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      '${snapshot.data!.docs[index]['departure-date']}' +
-                                          " "
-                                              '${snapshot.data!.docs[index]['departure-time']}',
-                                      style: Styles.headLineStyle3,
-                                    ),
-                                    const Gap(5),
-                                    Text(
-                                      'Departure',
-                                      style: Styles.headLineStyle4,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Gap(height * 0.03),
-                            const DashLines(true, 7, 5),
-                            Gap(height * 0.03),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    Row(
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Image.asset(
-                                          'assets/images/visa.png',
-                                          scale: 11,
-                                        ),
                                         Text(
-                                          ' *** 2462',
+                                          snapshot.data!.docs[index]
+                                              ['from-name'],
                                           style: Styles.headLineStyle3,
+                                        ),
+                                        const Gap(5),
+                                        Text(
+                                          'From',
+                                          style: Styles.headLineStyle4,
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          snapshot.data!.docs[index]['to-name'],
+                                          style: Styles.headLineStyle3,
+                                        ),
+                                        const Gap(5),
+                                        Text(
+                                          'Travelling to',
+                                          style: Styles.headLineStyle4,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Gap(height * 0.03),
+                                const DashLines(true, 7, 5),
+                                Gap(height * 0.03),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          snapshot.data!.docs[index]['number']
+                                              .toString(),
+                                          style: Styles.headLineStyle3,
+                                        ),
+                                        const Gap(5),
+                                        Text(
+                                          'Number of e-tickets',
+                                          style: Styles.headLineStyle4,
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          '${snapshot.data!.docs[index]['departure-date']}' +
+                                              " "
+                                                  '${snapshot.data!.docs[index]['departure-time']}',
+                                          style: Styles.headLineStyle3,
+                                        ),
+                                        const Gap(5),
+                                        Text(
+                                          'Departure',
+                                          style: Styles.headLineStyle4,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Gap(height * 0.03),
+                                const DashLines(true, 7, 5),
+                                Gap(height * 0.03),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/visa.png',
+                                              scale: 11,
+                                            ),
+                                            Text(
+                                              ' *** 2462',
+                                              style: Styles.headLineStyle3,
+                                            )
+                                          ],
+                                        ),
+                                        const Gap(5),
+                                        Text(
+                                          'Payment method',
+                                          style: Styles.headLineStyle4,
                                         )
                                       ],
                                     ),
-                                    const Gap(5),
-                                    Text(
-                                      'Payment method',
-                                      style: Styles.headLineStyle4,
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      'Rs. ${snapshot.data!.docs[index]['price-in-rupees']}'
-                                          .toString(),
-                                      style: Styles.headLineStyle3,
-                                    ),
-                                    const Gap(5),
-                                    Text(
-                                      'Price',
-                                      style: Styles.headLineStyle4,
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          'Rs. ${snapshot.data!.docs[index]['price-in-rupees']}'
+                                              .toString(),
+                                          style: Styles.headLineStyle3,
+                                        ),
+                                        const Gap(5),
+                                        Text(
+                                          'Price',
+                                          style: Styles.headLineStyle4,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
+                                // Gap(height * 0.03),
+                                // const Divider(),
+
+                                // DashLines(true, 7, 7),
                               ],
                             ),
-                            // Gap(height * 0.03),
-                            // const Divider(),
-
-                            // DashLines(true, 7, 7),
-                          ],
+                          ),
                         ),
+                        itemCount: snapshot.data!.docs.length,
                       ),
-                    ),
-                    itemCount: snapshot.data!.docs.length,
-                  ),
-                ),
+                    );
+                  }
+                  return CircularProgressIndicator();
+                },
                 stream: FirebaseFirestore.instance
                     .collection('users')
                     .doc(currentUserID)
