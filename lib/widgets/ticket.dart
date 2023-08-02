@@ -159,7 +159,7 @@ class Ticket extends StatelessWidget {
             ),
           ),
           Container(
-            height: height * 0.10,
+            height: height * 0.11,
             decoration: BoxDecoration(
               color: isColor == false ? Styles.orangeColor : Colors.white,
               borderRadius: BorderRadius.only(

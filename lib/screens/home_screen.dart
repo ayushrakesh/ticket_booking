@@ -131,6 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       var tickets = docs
                           .map((e) => e.data() as Map<String, dynamic>)
                           .toList();
+
+                      print(tickets);
+                      print(tickets.length);
+                      print(tickets[2]);
                       return Ticket(tickets[index]);
                     },
                     itemCount: snapshot.data!.docs.length,

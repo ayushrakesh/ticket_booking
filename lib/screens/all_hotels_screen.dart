@@ -44,7 +44,7 @@ class AllHotelsScreen extends StatelessWidget {
                 var hotelsWidgets = hotelsMap.map((e) => Hotel(e)).toList();
                 return GridView.count(
                   crossAxisCount: 2,
-                  mainAxisSpacing: 14, childAspectRatio: 0.64,
+                  mainAxisSpacing: 14, childAspectRatio: 0.62,
                   children: hotelsWidgets,
                   // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   //     // mainAxisExtent: 0.,
