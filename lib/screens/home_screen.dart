@@ -171,10 +171,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          const Gap(15),
+          Gap(height * 0.02),
           Container(
             width: double.infinity,
-            height: height * 0.5,
+            height: height * 0.4,
             child: StreamBuilder<QuerySnapshot>(
               builder: (context, snapshot) {
                 // print(snapshot.data!.docs.

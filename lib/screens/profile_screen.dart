@@ -118,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Gap(height * 0.005),
                   Text(
-                    'New York',
+                    'New Delhi',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -160,20 +160,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
               const Spacer(),
-              Column(
-                children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Text(
-                      'Edit',
-                      style: Styles.textStyle.copyWith(
-                        color: Styles.primaryColor,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
           Gap(height * 0.01),
@@ -387,7 +373,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Miles accrued',
+                      'Distance accrued',
                       style: Styles.headLineStyle4.copyWith(
                         fontSize: 16,
                       ),
@@ -518,7 +504,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: ElevatedButton.styleFrom(
                   elevation: 12.0,
                   padding: EdgeInsets.symmetric(
-                      vertical: height * 0.03, horizontal: width * 0.1),
+                      vertical: height * 0.028, horizontal: width * 0.1),
                   backgroundColor: Colors.deepOrange,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(

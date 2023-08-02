@@ -19,12 +19,12 @@ class Ticket extends StatelessWidget {
 
     return Container(
       padding: isColor == false ? EdgeInsets.only(left: width * 0.04) : null,
-      width: width * 0.75,
+      width: width * 0.77,
       child: Column(
         children: [
           // Blue part of the ticket
           Container(
-            height: height * 0.12,
+            height: height * 0.11,
             decoration: BoxDecoration(
               color: isColor == false ? const Color(0xFF526799) : Colors.white,
               borderRadius: const BorderRadius.only(
@@ -116,7 +116,7 @@ class Ticket extends StatelessWidget {
           ),
           // Orange part of the ticket
           Container(
-            height: height * 0.036,
+            height: height * 0.032,
             color: isColor == false ? Styles.orangeColor : Colors.white,
             child: Row(
               children: [
@@ -159,7 +159,7 @@ class Ticket extends StatelessWidget {
             ),
           ),
           Container(
-            height: height * 0.11,
+            height: height * 0.10,
             decoration: BoxDecoration(
               color: isColor == false ? Styles.orangeColor : Colors.white,
               borderRadius: BorderRadius.only(

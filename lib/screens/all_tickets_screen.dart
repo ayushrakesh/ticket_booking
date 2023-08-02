@@ -345,7 +345,7 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
                       13,
                     ),
                   ),
-                  backgroundColor: Color.fromARGB(255, 205, 145, 230),
+                  backgroundColor: Color.fromARGB(255, 115, 9, 160),
                   padding: EdgeInsets.symmetric(
                     vertical: height * 0.02,
                   ),

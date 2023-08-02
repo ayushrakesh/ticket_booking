@@ -59,6 +59,7 @@ class SearchScreen extends StatelessWidget {
                         image: const DecorationImage(
                           fit: BoxFit.fill,
                           image: AssetImage('assets/images/sit.jpg'),
+                          filterQuality: FilterQuality.low,
                         ),
                       ),
                     ),

@@ -36,7 +36,7 @@ class Hotel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: height * 0.26,
+            height: height * 0.21,
             width: width * 0.46,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
@@ -52,22 +52,23 @@ class Hotel extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 child: FadeInImage.assetNetwork(
                     fit: BoxFit.cover,
+                    filterQuality: FilterQuality.low,
                     placeholder: 'assets/gifs/loading.gif',
                     image: hotel['image']),
               ),
             ),
           ),
-          const Gap(10),
+          Gap(height * 0.01),
           Text(
             hotel['place'],
             style: Styles.headLineStyle2.copyWith(color: Styles.kakiColor),
           ),
-          const Gap(5),
+          Gap(height * 0.01),
           Text(
             hotel['destination'],
             style: Styles.headLineStyle3.copyWith(color: Colors.white),
           ),
-          const Gap(8),
+          Gap(height * 0.005),
           Text(
             '\$${hotel['price'].toString()}/night',
             style: Styles.headLineStyle1.copyWith(color: Styles.kakiColor),

@@ -87,325 +87,383 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.indigo,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: height * 0.04, vertical: height * 0.04),
-          child: Column(
-            children: [
-              Gap(height * 0.1),
-              isLogin
-                  ? Text(
-                      'Welcome Back',
-                      style: TextStyle(
-                          letterSpacing: 0.8,
-                          color: Styles.bgColor,
-                          fontSize: 38,
-                          fontWeight: FontWeight.bold),
-                    )
-                  : Text(
-                      'Register',
-                      style: TextStyle(
-                          letterSpacing: 0.8,
-                          color: Styles.bgColor,
-                          fontSize: 38,
-                          fontWeight: FontWeight.bold),
-                    ),
-              isLogin
-                  ? Text(
-                      'Login to your account',
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Styles.bgColor,
-                          fontWeight: FontWeight.w300),
-                    )
-                  : Text(
-                      'Create your account',
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Styles.bgColor,
-                          fontWeight: FontWeight.w300),
-                    ),
-              Gap(height * 0.06),
-              Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: emailCtl,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (!value!.contains('@')) {
-                          return 'Please provide a valid email';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        setState(() {
-                          email = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                        hintStyle: TextStyle(
-                            color: Styles.primaryColor, letterSpacing: 0.7),
-                        fillColor: Colors.indigo.shade100,
-                        filled: true,
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: height * 0.02, horizontal: width * 0.08),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            const Color.fromARGB(255, 9, 39, 213),
+            Color.fromARGB(255, 140, 154, 232),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: height * 0.04, vertical: height * 0.04),
+            child: Column(
+              children: [
+                Gap(height * 0.1),
+                isLogin
+                    ? Text(
+                        'Welcome Back',
+                        style: TextStyle(
+                            letterSpacing: 0.8,
+                            color: Styles.bgColor,
+                            fontSize: 38,
+                            fontWeight: FontWeight.bold),
+                      )
+                    : Text(
+                        'Register',
+                        style: TextStyle(
+                            letterSpacing: 0.8,
+                            color: Styles.bgColor,
+                            fontSize: 38,
+                            fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    Gap(height * .04),
-                    if (!isLogin)
-                      Column(
-                        children: [
-                          TextFormField(
-                            controller: userCtl,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Username must not be empty';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              setState(() {
-                                username = value;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              hintText: 'Username',
-                              hintStyle: TextStyle(
-                                  color: Styles.primaryColor,
-                                  letterSpacing: 0.7),
-                              fillColor: Colors.indigo.shade100,
-                              filled: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: height * 0.02,
-                                  horizontal: width * 0.08),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
+                isLogin
+                    ? Text(
+                        'Login to your account',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Styles.bgColor,
+                            fontWeight: FontWeight.w300),
+                      )
+                    : Text(
+                        'Create your account',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Styles.bgColor,
+                            fontWeight: FontWeight.w300),
+                      ),
+                Gap(height * 0.06),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: emailCtl,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (!value!.contains('@')) {
+                            return 'Please provide a valid email';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          setState(() {
+                            email = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Email',
+                          hintStyle: TextStyle(
+                              color: Styles.primaryColor, letterSpacing: 0.7),
+                          fillColor: Colors.indigo.shade100,
+                          filled: true,
+                          errorStyle: TextStyle(
+                            fontSize: 14,
+                            color: const Color.fromARGB(255, 235, 195, 75),
                           ),
-                          Gap(height * 0.04),
-                        ],
-                      ),
-                    TextFormField(
-                      controller: passCtl,
-                      keyboardType: TextInputType.text,
-                      obscureText: true,
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 6) {
-                          return 'Password must be at least 6 characters long';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          password = value;
-                        });
-                      },
-                      onSaved: (value) {
-                        setState(() {
-                          password = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        hintStyle: TextStyle(
-                            color: Styles.primaryColor, letterSpacing: 0.7),
-                        fillColor: Colors.indigo.shade100,
-                        filled: true,
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: height * 0.02, horizontal: width * 0.08),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                    Gap(height * 0.05),
-                    if (!isLogin)
-                      Column(
-                        children: [
-                          TextFormField(
-                            controller: confCtl,
-                            keyboardType: TextInputType.text,
-                            obscureText: true,
-                            validator: (value) {
-                              if (!(value == password)) {
-                                return 'Password does not matched';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              setState(() {
-                                confPassword = value;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              hintText: 'Confirm Password',
-                              hintStyle: TextStyle(
-                                  color: Styles.primaryColor,
-                                  letterSpacing: 0.7),
-                              fillColor: Colors.indigo.shade100,
-                              filled: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: height * 0.02,
-                                  horizontal: width * 0.08),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(
+                              10,
                             ),
+                            borderSide: BorderSide.none,
                           ),
-                          Gap(height * 0.08),
-                        ],
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: height * 0.02,
+                              horizontal: width * 0.08),
+                          // focusedBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide.none,
+                          //   borderRadius: BorderRadius.circular(10),
+                          // ),
+                          // enabledBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide.none,
+                          //   borderRadius: BorderRadius.circular(10),
+                          // ),
+                          // disabledBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide.none,
+                          //   borderRadius: BorderRadius.circular(10),
+                          // ),
+                          // errorBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide.none,
+                          //   borderRadius: BorderRadius.circular(10),
+                          // ),
+                        ),
                       ),
-                    isLoading
-                        ? CircularProgressIndicator()
-                        : Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(24),
-                              gradient: const LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 2, 9, 65),
-                                    Color.fromARGB(255, 14, 31, 163)
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight),
-                            ),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                backgroundColor: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(24),
-                                ),
-                                // backgroundColor: Color.fromARGB(255, 2, 9, 65),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: width * 0.3,
-                                    vertical: height * 0.02),
-                              ),
-                              onPressed: () {
-                                if (formKey.currentState!.validate()) {
-                                  formKey.currentState!.save();
-                                  email!.trim();
-                                  password!.trim();
-                                  if (confPassword != null) {
-                                    confPassword!.trim();
-                                  }
-                                  if (username != null) {
-                                    username!.trim();
-                                  }
-
-                                  emailCtl.clear();
-                                  passCtl.clear();
-                                  confCtl.clear();
-                                  userCtl.clear();
-
-                                  submitForm(
-                                      email, username, password, confPassword);
-                                  // print(username);
-                                  // print(email);
-                                  // print(password);
-                                  // print(confPassword);
+                      Gap(height * .04),
+                      if (!isLogin)
+                        Column(
+                          children: [
+                            TextFormField(
+                              controller: userCtl,
+                              keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Username must not be empty';
                                 }
-                                FocusScope.of(context).unfocus();
+                                return null;
                               },
-                              child: Text(
-                                isLogin ? 'LOGIN' : 'REGISTER',
-                                style: TextStyle(
-                                    color: Styles.bgColor, letterSpacing: 0.6),
+                              onSaved: (value) {
+                                setState(() {
+                                  username = value;
+                                });
+                              },
+                              decoration: InputDecoration(
+                                errorStyle: TextStyle(
+                                  fontSize: 14,
+                                  color:
+                                      const Color.fromARGB(255, 235, 195, 75),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ),
+                                  borderSide: BorderSide.none,
+                                ),
+                                hintText: 'Username',
+                                hintStyle: TextStyle(
+                                    color: Styles.primaryColor,
+                                    letterSpacing: 0.7),
+                                fillColor: Colors.indigo.shade100,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: height * 0.02,
+                                    horizontal: width * 0.08),
+                                // focusedBorder: OutlineInputBorder(
+                                //   borderSide: BorderSide.none,
+                                //   borderRadius: BorderRadius.circular(10),
+                                // ),
+                                // enabledBorder: OutlineInputBorder(
+                                //   borderSide: BorderSide.none,
+                                //   borderRadius: BorderRadius.circular(10),
+                                // ),
+                                // disabledBorder: OutlineInputBorder(
+                                //   borderSide: BorderSide.none,
+                                //   borderRadius: BorderRadius.circular(10),
+                                // ),
+                                // errorBorder: OutlineInputBorder(
+                                //   borderSide: BorderSide.none,
+                                //   borderRadius: BorderRadius.circular(10),
+                                // ),
                               ),
                             ),
-                          ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          isLogin
-                              ? 'Don\'t have an account? '
-                              : 'Already have an account?',
-                          style: TextStyle(color: Styles.bgColor),
+                            Gap(height * 0.04),
+                          ],
                         ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              isLogin = !isLogin;
-                            });
-                          },
-                          style: TextButton.styleFrom(),
-                          child: Text(
-                            isLogin ? 'Sign up' : 'Log in',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                color: Color.fromARGB(255, 248, 194, 212)),
+                      TextFormField(
+                        controller: passCtl,
+                        keyboardType: TextInputType.text,
+                        obscureText: true,
+                        validator: (value) {
+                          if (value!.isEmpty || value.length < 6) {
+                            return 'Password must be at least 6 characters long';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            password = value;
+                          });
+                        },
+                        onSaved: (value) {
+                          setState(() {
+                            password = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(
+                            fontSize: 14,
+                            color: const Color.fromARGB(255, 235, 195, 75),
                           ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(
+                              10,
+                            ),
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: 'Password',
+                          hintStyle: TextStyle(
+                              color: Styles.primaryColor, letterSpacing: 0.7),
+                          fillColor: Colors.indigo.shade100,
+                          filled: true,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: height * 0.02,
+                              horizontal: width * 0.08),
+                          // focusedBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide.none,
+                          //   borderRadius: BorderRadius.circular(10),
+                          // ),
+                          // enabledBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide.none,
+                          //   borderRadius: BorderRadius.circular(10),
+                          // ),
+                          // disabledBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide.none,
+                          //   borderRadius: BorderRadius.circular(10),
+                          // ),
+                          // errorBorder: OutlineInputBorder(
+                          //   borderSide: BorderSide.none,
+                          //   borderRadius: BorderRadius.circular(10),
+                          // ),
                         ),
-                      ],
-                    )
-                  ],
+                      ),
+                      Gap(height * 0.05),
+                      if (!isLogin)
+                        Column(
+                          children: [
+                            TextFormField(
+                              controller: confCtl,
+                              keyboardType: TextInputType.text,
+                              obscureText: true,
+                              validator: (value) {
+                                if (!(value == password)) {
+                                  return 'Password does not matched';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                setState(() {
+                                  confPassword = value;
+                                });
+                              },
+                              decoration: InputDecoration(
+                                errorStyle: TextStyle(
+                                  fontSize: 14,
+                                  color:
+                                      const Color.fromARGB(255, 235, 195, 75),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ),
+                                  borderSide: BorderSide.none,
+                                ),
+                                hintText: 'Confirm Password',
+                                hintStyle: TextStyle(
+                                    color: Styles.primaryColor,
+                                    letterSpacing: 0.7),
+                                fillColor: Colors.indigo.shade100,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: height * 0.02,
+                                  horizontal: width * 0.08,
+                                ),
+                                // focusedBorder: OutlineInputBorder(
+                                //   borderSide: BorderSide.none,
+                                //   borderRadius: BorderRadius.circular(10),
+                                // ),
+                                // enabledBorder: OutlineInputBorder(
+                                //   borderSide: BorderSide.none,
+                                //   borderRadius: BorderRadius.circular(10),
+                                // ),
+                                // disabledBorder: OutlineInputBorder(
+                                //   borderSide: BorderSide.none,
+                                //   borderRadius: BorderRadius.circular(10),
+                                // ),
+                                // errorBorder: OutlineInputBorder(
+                                //   borderSide: BorderSide.none,
+                                //   borderRadius: BorderRadius.circular(10),
+                                // ),
+                              ),
+                            ),
+                            Gap(height * 0.08),
+                          ],
+                        ),
+                      isLoading
+                          ? CircularProgressIndicator()
+                          : Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(24),
+                                gradient: const LinearGradient(
+                                    colors: [
+                                      Color.fromARGB(255, 2, 9, 65),
+                                      Color.fromARGB(255, 14, 31, 163)
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight),
+                              ),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: Colors.transparent,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(24),
+                                  ),
+                                  // backgroundColor: Color.fromARGB(255, 2, 9, 65),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.3,
+                                      vertical: height * 0.02),
+                                ),
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    formKey.currentState!.save();
+                                    email!.trim();
+                                    password!.trim();
+                                    if (confPassword != null) {
+                                      confPassword!.trim();
+                                    }
+                                    if (username != null) {
+                                      username!.trim();
+                                    }
+
+                                    emailCtl.clear();
+                                    passCtl.clear();
+                                    confCtl.clear();
+                                    userCtl.clear();
+
+                                    submitForm(email, username, password,
+                                        confPassword);
+                                    // print(username);
+                                    // print(email);
+                                    // print(password);
+                                    // print(confPassword);
+                                  }
+                                  FocusScope.of(context).unfocus();
+                                },
+                                child: Text(
+                                  isLogin ? 'LOGIN' : 'REGISTER',
+                                  style: TextStyle(
+                                      color: Styles.bgColor,
+                                      letterSpacing: 0.6),
+                                ),
+                              ),
+                            ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            isLogin
+                                ? 'Don\'t have an account? '
+                                : 'Already have an account?',
+                            style: TextStyle(color: Styles.bgColor),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                isLogin = !isLogin;
+                              });
+                            },
+                            style: TextButton.styleFrom(),
+                            child: Text(
+                              isLogin ? 'Sign up' : 'Log in',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  color: Color.fromARGB(255, 248, 194, 212)),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
