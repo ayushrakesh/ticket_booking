@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -33,25 +34,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
   bool isCorrectAmount = false;
   String? paymentId;
 
+  var userEmail;
+
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
     Navigator.of(context).pop();
     addBookedTicket();
-    print(response.orderId);
+
     // print(response.)
     paymentId = response.paymentId;
-    print(response.paymentId);
-    // print(response.message);
-    // print(response.error);
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     // Do something when payment fails
     Navigator.of(context).pop();
-
-    print(response.code);
-    print(response.message);
-    print(response.error);
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
@@ -64,6 +60,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+    getuserData();
     super.initState();
   }
 
@@ -71,6 +68,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void dispose() {
     _razorpay.clear();
     super.dispose();
+  }
+
+  void getuserData() async {
+    final currentUserData =
+        FirebaseFirestore.instance.collection('users').doc(currentUserId);
+
+    final userGet = await currentUserData.get();
+    userEmail = userGet['email'];
   }
 
   void addBookedTicket() async {
@@ -219,7 +224,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ? () {
                         FocusScope.of(context).unfocus();
                         var options = {
-                          'key': 'rzp_test_CblvpHIuQvZbuJ',
+                          'key': dotenv.env['RAZORPAY_KEY'],
                           'amount':
                               amount * 100, //in the smallest currency sub-unit.
                           'name': 'Ticketing Infinity Corporation',
@@ -227,17 +232,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           'description': 'Flight ticket booking platform.',
                           'timeout': 300, // in seconds
                           'prefill': {
-                            'contact': '7000427287',
-                            'email': 'test@gmail.com'
-                            // 'email': FutureBuilder(
-                            //   builder: (context, snapshot) {
-                            //     var doc = snapshot.data!.docs.firstWhere(
-                            //         (element) => element.id == currentUserId);
-                            //     return doc['email'];
-                            //   },
-                            //   future:
-                            //       FirebaseFirestore.instance.collection('users').get(),
-                            // )
+                            'email': userEmail,
                           }
                         };
                         _razorpay.open(options);

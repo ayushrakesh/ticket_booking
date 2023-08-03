@@ -287,7 +287,7 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
               child: TextField(
                 controller: fromController,
                 onChanged: (value) {
-                  fromFetch(value);
+                  fromFetch(value.trim());
                 },
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
@@ -315,7 +315,7 @@ class _AllTicketsScreenState extends State<AllTicketsScreen> {
               child: TextField(
                 controller: toController,
                 onChanged: (value) {
-                  toFetch(value);
+                  toFetch(value.trim());
                 },
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
